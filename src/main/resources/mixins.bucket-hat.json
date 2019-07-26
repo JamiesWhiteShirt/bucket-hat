@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "com.jamieswhiteshirt.buckethat.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "entity.mob.AbstractSkeletonEntityMixin",
+    "entity.mob.EndermanEntityMixin",
+    "entity.mob.MobEntityMixin",
+    "entity.mob.ZombieEntity_AbstractSkeletonEntityMixin"
+  ],
+  "client": [
+    "client.gui.hud.InGameHudMixin",
+    "client.render.entity.feature.HeadFeatureRendererMixin",
+    "client.render.entity.feature.ArmorFeatureRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

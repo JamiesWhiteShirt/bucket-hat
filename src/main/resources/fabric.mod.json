@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "bucket-hat",
+  "version": "${version}",
+  "name": "Bucket Hat",
+  "description": "Put a bucket on your head.",
+  "authors": [
+    "JamiesWhiteShirt"
+  ],
+  "contact": {
+    "sources": "https://github.com/JamiesWhiteShirt/bucket-hat"
+  },
+  "license": "MIT",
+  "icon": "assets/bucket-hat/icon.png",
+  "environment": "*",
+  "mixins": [
+    "mixins.bucket-hat.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.4.0",
+    "fabric-resource-loader-v0": "*"
+  }
+}
