@@ -26,7 +26,7 @@ public abstract class ZombieEntity_AbstractSkeletonEntityMixin extends HostileEn
     )
     private void initEquipment(LocalDifficulty localDifficulty, CallbackInfo ci) {
         if (random.nextInt(30) == 0) {
-            setEquippedStack(EquipmentSlot.HEAD, new ItemStack(Items.BUCKET));
+            equipStack(EquipmentSlot.HEAD, new ItemStack(Items.BUCKET));
         }
     }
 }

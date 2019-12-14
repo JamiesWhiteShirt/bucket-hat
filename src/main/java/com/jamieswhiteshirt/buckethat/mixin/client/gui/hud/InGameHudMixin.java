@@ -1,6 +1,6 @@
 package com.jamieswhiteshirt.buckethat.mixin.client.gui.hud;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
@@ -39,24 +39,24 @@ abstract public class InGameHudMixin extends DrawableHelper {
     )
     private void render(float f1, CallbackInfo ci, TextRenderer textRenderer, ItemStack stack) {
         if (client.options.perspective == 0 && stack.getItem() == Items.BUCKET) {
-            GlStateManager.disableDepthTest();
-            GlStateManager.depthMask(false);
-            GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.disableAlphaTest();
+            RenderSystem.disableDepthTest();
+            RenderSystem.depthMask(false);
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.disableAlphaTest();
             client.getTextureManager().bindTexture(BUCKET_BLUR);
-            Tessellator tessellator_1 = Tessellator.getInstance();
-            BufferBuilder bufferBuilder_1 = tessellator_1.getBufferBuilder();
-            bufferBuilder_1.begin(GL11.GL_QUADS, VertexFormats.POSITION_UV);
-            bufferBuilder_1.vertex(0.0D, scaledHeight, -90.0D).texture(0.0D, 1.0D).next();
-            bufferBuilder_1.vertex(scaledWidth, scaledHeight, -90.0D).texture(1.0D, 1.0D).next();
-            bufferBuilder_1.vertex(scaledWidth, 0.0D, -90.0D).texture(1.0D, 0.0D).next();
-            bufferBuilder_1.vertex(0.0D, 0.0D, -90.0D).texture(0.0D, 0.0D).next();
-            tessellator_1.draw();
-            GlStateManager.depthMask(true);
-            GlStateManager.enableDepthTest();
-            GlStateManager.enableAlphaTest();
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder bufferBuilder = tessellator.getBuffer();
+            bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_TEXTURE);
+            bufferBuilder.vertex(0.0D, scaledHeight, -90.0D).texture(0.0F, 1.0F).next();
+            bufferBuilder.vertex(scaledWidth, scaledHeight, -90.0D).texture(1.0F, 1.0F).next();
+            bufferBuilder.vertex(scaledWidth, 0.0D, -90.0D).texture(1.0F, 0.0F).next();
+            bufferBuilder.vertex(0.0D, 0.0D, -90.0D).texture(0.0F, 0.0F).next();
+            tessellator.draw();
+            RenderSystem.depthMask(true);
+            RenderSystem.enableDepthTest();
+            RenderSystem.enableAlphaTest();
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 }
