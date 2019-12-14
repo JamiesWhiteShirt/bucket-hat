@@ -10,8 +10,8 @@
   ],
   "client": [
     "client.gui.hud.InGameHudMixin",
-    "client.render.entity.feature.HeadFeatureRendererMixin",
-    "client.render.entity.feature.ArmorFeatureRendererMixin"
+    "client.render.entity.feature.ArmorFeatureRendererMixin",
+    "client.render.entity.feature.HeadFeatureRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
