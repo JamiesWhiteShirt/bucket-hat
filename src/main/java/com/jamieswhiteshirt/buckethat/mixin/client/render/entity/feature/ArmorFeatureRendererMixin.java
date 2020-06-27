@@ -23,8 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ArmorFeatureRenderer.class)
 public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extends BipedEntityModel<T>, A extends BipedEntityModel<T>> extends FeatureRenderer<T, M> {
-    @Shadow public abstract A getArmor(EquipmentSlot equipmentSlot_1);
-    @Shadow protected abstract void setVisible(A var1, EquipmentSlot var2);
+    @Shadow protected abstract void setVisible(A bipedModel, EquipmentSlot slot);
+    @Shadow protected abstract boolean usesSecondLayer(EquipmentSlot slot);
 
     private static final Identifier BUCKET_ARMOR_TEXTURE = new Identifier("bucket-hat", "textures/models/armor/bucket.png");
 
@@ -33,22 +33,19 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
     }
 
     @Inject(
-        method = "renderArmor(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/entity/LivingEntity;FFFFFFLnet/minecraft/entity/EquipmentSlot;I)V",
+        method = "renderArmor(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/EquipmentSlot;ILnet/minecraft/client/render/entity/model/BipedEntityModel;)V",
         at = @At("HEAD")
     )
-    private void renderArmor(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, T livingEntity, float f, float g, float h, float i, float j, float k, EquipmentSlot equipmentSlot_1, int l, CallbackInfo ci) {
-        if (equipmentSlot_1 == EquipmentSlot.HEAD) {
-            ItemStack itemStack = livingEntity.getEquippedStack(equipmentSlot_1);
+    private void renderArmor(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, T livingEntity, EquipmentSlot equipmentSlot, int i, A armorModel, CallbackInfo ci) {
+        if (equipmentSlot == EquipmentSlot.HEAD) {
+            ItemStack itemStack = livingEntity.getEquippedStack(equipmentSlot);
             if (itemStack.getItem() == Items.BUCKET) {
-                A bipedEntityModel = this.getArmor(equipmentSlot_1);
-                this.getContextModel().setAttributes(bipedEntityModel);
-                bipedEntityModel.animateModel(livingEntity, f, g, h);
-                this.setVisible(bipedEntityModel, equipmentSlot_1);
-                bipedEntityModel.setAngles(livingEntity, f, g, i, j, k);
+                getContextModel().setAttributes(armorModel);
+                setVisible(armorModel, equipmentSlot);
 
-                boolean renderGlint = itemStack.hasEnchantmentGlint();
+                boolean renderGlint = itemStack.hasGlint();
                 VertexConsumer vertexConsumer = ItemRenderer.getArmorVertexConsumer(vertexConsumerProvider, RenderLayer.getEntityCutoutNoCull(BUCKET_ARMOR_TEXTURE), false, renderGlint);
-                bipedEntityModel.render(matrixStack, vertexConsumer, l, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+                armorModel.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
             }
         }
     }

@@ -8,6 +8,7 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -29,7 +30,7 @@ abstract public class InGameHudMixin extends DrawableHelper {
     private static final Identifier BUCKET_BLUR = new Identifier("bucket-hat", "textures/misc/bucket_blur.png");
 
     @Inject(
-        method = "render(F)V",
+        method = "render(Lnet/minecraft/client/util/math/MatrixStack;F)V",
         at = @At(
             value = "INVOKE_ASSIGN",
             target = "Lnet/minecraft/entity/player/PlayerInventory;getArmorStack(I)Lnet/minecraft/item/ItemStack;",
@@ -37,7 +38,7 @@ abstract public class InGameHudMixin extends DrawableHelper {
         ),
         locals = LocalCapture.CAPTURE_FAILHARD
     )
-    private void render(float f1, CallbackInfo ci, TextRenderer textRenderer, ItemStack stack) {
+    private void render(MatrixStack matrices, float tickDelta, CallbackInfo ci, TextRenderer textRenderer, ItemStack stack) {
         if (client.options.perspective == 0 && stack.getItem() == Items.BUCKET) {
             RenderSystem.disableDepthTest();
             RenderSystem.depthMask(false);
