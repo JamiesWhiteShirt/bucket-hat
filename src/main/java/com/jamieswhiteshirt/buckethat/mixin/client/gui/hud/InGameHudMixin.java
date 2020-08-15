@@ -39,7 +39,7 @@ abstract public class InGameHudMixin extends DrawableHelper {
         locals = LocalCapture.CAPTURE_FAILHARD
     )
     private void render(MatrixStack matrices, float tickDelta, CallbackInfo ci, TextRenderer textRenderer, ItemStack stack) {
-        if (client.options.perspective == 0 && stack.getItem() == Items.BUCKET) {
+        if (client.options.getPerspective().isFirstPerson() && stack.getItem() == Items.BUCKET) {
             RenderSystem.disableDepthTest();
             RenderSystem.depthMask(false);
             RenderSystem.defaultBlendFunc();
